@@ -47,7 +47,7 @@ body::before {
     to bottom,
     rgba(0, 0, 0, 0) 0px,
     rgba(0, 0, 0, 0) 2px,
-    rgba(0, 0, 0, 0.12) 3px
+    rgba(0, 0, 0, 0.08) 3px
   );
   mix-blend-mode: overlay;
 }
@@ -656,7 +656,7 @@ body::before {
 ========================================================= */
 
 html.purga-mode {
-  --bg: #0a0000;
+  --bg: #000000;
   --green: #ff1a1a;
   --green-dim: #b30000;
   --green-faint: #660000;
@@ -670,29 +670,17 @@ html.purga-mode {
 html.purga-mode body {
   background: var(--bg) !important;
   color: var(--green) !important;
-  filter: hue-rotate(330deg) saturate(2);
-  animation: purgaPulse 10s infinite;
+  animation: purgaPulse 10s steps(1, end) infinite;
 }
 
 @keyframes purgaPulse {
-  0%,
-  88%,
-  100% {
-    filter: none;
-  }
-
-  90% {
-    filter: hue-rotate(330deg) saturate(2) brightness(1.1);
-  }
-
-  92% {
-    filter: hue-rotate(350deg) saturate(3) brightness(1.25);
-  }
-
-  94% {
-    filter: hue-rotate(330deg) saturate(2);
-  }
-
+  0% { filter: none; }
+  87% { filter: none; }
+  88% { filter: hue-rotate(330deg) saturate(1.3) brightness(1.05); }
+  89% { filter: hue-rotate(350deg) saturate(1.6) brightness(1.1); }
+  90% { filter: hue-rotate(330deg) saturate(1.3); }
+  91% { filter: none; }
+  100% { filter: none; }
 }
 
 /* =========================================================

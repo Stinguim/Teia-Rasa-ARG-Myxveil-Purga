@@ -445,7 +445,8 @@ function startPurga() {
 
   const root = document.documentElement;
 
-  root.style.setProperty("--bg", "#0a0000");
+  // Fundo passa a preto puro (a cor vermelha só aparece nos flashes via CSS)
+  root.style.setProperty("--bg", "#000000");
   root.style.setProperty("--green", "#ff1a1a");
   root.style.setProperty("--green-dim", "#b30000");
   root.style.setProperty("--green-faint", "#660000");
