@@ -454,7 +454,7 @@ function startPurga() {
   // 3. Substituir BEPO por monstro
   const bepoImg = document.getElementById("bepo-img");
   if (bepoImg) {
-    bepoImg.src = "assets/monstro-placeholder.png"; // <-- mete aqui a tua imagem depois
+    bepoImg.src = "images/preto.png"; // <-- mete aqui a tua imagem depois
   }
 
   // 4. Respostas passam a "..."

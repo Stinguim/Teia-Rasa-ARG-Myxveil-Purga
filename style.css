@@ -202,13 +202,12 @@ body::before {
   margin-bottom: 35px;
   transform: translateY(-18px);
 
-  filter:
+  /*filter:
     drop-shadow(0 0 3px #00ff66)
     drop-shadow(0 0 8px #00ff66);
 
   animation:
-    iconGlow 2.5s ease-in-out infinite,
-    iconFloat 4s ease-in-out infinite;
+    iconGlow 2.5s ease-in-out infinite,*/
 }
 
 .prompt-label {
@@ -580,9 +579,9 @@ body::before {
    SEQUÊNCIA FINAL — ARG COMPLETO
 ========================================================= */
 
-.terminal-icon.final-icon-up {
+/*.terminal-icon.final-icon-up {
   animation: iconRise 1.4s ease forwards;
-}
+}*/
 
 @keyframes iconRise {
   from {
@@ -751,12 +750,12 @@ html.purga-mode body {
 ========================================================= */
 
 .purga-mode .terminal-icon {
-  filter:
+  /*filter:
     drop-shadow(0 0 6px #ff0000)
     drop-shadow(0 0 14px #ff0000)
     hue-rotate(330deg)
-    saturate(3);
-  animation: iconCorrupt 0.3s infinite;
+    saturate(3);*/
+  animation: iconCorrupt 2.3s infinite;
 }
 
 @keyframes iconCorrupt {
