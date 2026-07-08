@@ -38,6 +38,38 @@ const statusTrack = document.getElementById("status-track");
 const statusUptime = document.getElementById("status-uptime");
 
 /* =========================================================
+   CORRUPÇÃO DE STATS — sempre visível
+   (mesma lógica usada em locations/status.js)
+========================================================= */
+
+const STATUS_GLITCH_CHARS = "#%&$@?!01¤§*■□";
+const STATUS_VARIANTS = ["0NLINE", "ONL#NE", "ON$INE", "ONLIN£"];
+
+function statusRandomChar() {
+  return STATUS_GLITCH_CHARS[Math.floor(Math.random() * STATUS_GLITCH_CHARS.length)];
+}
+
+function statusCorrupt(str, intensity = 0.18) {
+  return str
+    .split("")
+    .map((ch) => {
+      if (ch === " " || ch === ":") return ch;
+      return Math.random() < intensity ? statusRandomChar() : ch;
+    })
+    .join("");
+}
+
+function statusCorruptDigits(str, intensity = 0.22) {
+  return str
+    .split("")
+    .map((ch) => {
+      if (!/[0-9]/.test(ch)) return ch;
+      return Math.random() < intensity ? statusRandomChar() : ch;
+    })
+    .join("");
+}
+
+/* =========================================================
    TEMPO PERSISTENTE (localStorage)
 ========================================================= */
 
@@ -203,14 +235,33 @@ function showMainScreen() {
   renderKeyDisplay("");
   keyRealInput.focus();
 
-  statusUser.textContent = `USER : ${CONFIG.username}`;
-  statusStatus.textContent = "STATUS : ONLINE";
-  statusTrack.textContent = `TRACK : ${CONFIG.track}`;
+  refreshCorruptedStatus();
 
   updateUptime();
   setInterval(updateUptime, 1000);
+  setInterval(refreshCorruptedStatus, 1000);
+
   if (window.PURGA_ACTIVE) {
     startPurga();
+  }
+}
+
+/* =========================================================
+   STATUS CORROMPIDO — USER / STATUS / TRACK
+   Re-executado a cada segundo para nunca estabilizar
+========================================================= */
+
+function refreshCorruptedStatus() {
+  if (statusUser) {
+    statusUser.textContent = `USER : ${statusCorrupt(CONFIG.username)}`;
+  }
+  if (statusStatus) {
+    const variant =
+      STATUS_VARIANTS[Math.floor(Math.random() * STATUS_VARIANTS.length)];
+    statusStatus.textContent = `STATUS : ${variant}`;
+  }
+  if (statusTrack) {
+    statusTrack.textContent = `TRACK : ${statusCorrupt(CONFIG.track)}`;
   }
 }
 
@@ -226,7 +277,8 @@ function updateUptime() {
   const m = String(Math.floor((elapsed % 3600) / 60)).padStart(2, "0");
   const s = String(elapsed % 60).padStart(2, "0");
 
-  statusUptime.textContent = `UPTIME : ${h}:${m}:${s}`;
+  const clean = `${h}:${m}:${s}`;
+  statusUptime.textContent = `UPTIME : ${statusCorruptDigits(clean)}`;
 }
 
 /* =========================================================
