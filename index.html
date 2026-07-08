@@ -10,18 +10,21 @@
 </head>
 
 <body>
+
   <!-- ======================================================
        SEQUÊNCIA DE ARRANQUE
   ====================================================== -->
-  <div id="boot-screen" class="hidden">
+  <div id="boot-screen" class="hidden purga-target">
     <div id="boot-lines"></div>
   </div>
 
   <!-- ======================================================
        ECRÃ PRINCIPAL
   ====================================================== -->
-  <div id="main-screen" class="hidden-init">
+  <div id="main-screen" class="hidden-init purga-target">
+
     <img
+      id="bepo-img"
       src="images/terminal-icon.png"
       alt="Terminal"
       class="terminal-icon"
@@ -55,6 +58,9 @@
   </div>
 
   <div id="fade-screen"></div>
+
+  <!-- Overlay para glitches da Purga -->
+  <div id="purga-glitch-overlay" class="hidden"></div>
 
   <script src="script.js"></script>
 </body>

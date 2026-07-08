@@ -1,3 +1,8 @@
+// ===============================
+// PURGA SEMPRE ATIVA NESTE REPO
+// ===============================
+window.PURGA_ACTIVE = true;
+window.TERMINAL_FORCE_PURGA_RESPONSES = false;
 /* =========================================================
    ARG TERMINAL — script.js (com temas + sons via config.json)
 ========================================================= */
@@ -136,6 +141,10 @@ function startBoot(username) {
     }
   }
 
+  if (window.PURGA_ACTIVE) {
+    setTimeout(() => startPurga(), 4000);
+  } 
+
   nextLine();
 }
 
@@ -200,6 +209,9 @@ function showMainScreen() {
 
   updateUptime();
   setInterval(updateUptime, 1000);
+  if (window.PURGA_ACTIVE) {
+    startPurga();
+  }
 }
 
 /* =========================================================
@@ -300,6 +312,10 @@ function checkKey(rawValue) {
 let responseTypeToken = 0;
 
 function setResponse(message, ok, key = "") {
+  if (window.TERMINAL_FORCE_PURGA_RESPONSES) {
+    message = "...";
+    ok = false;
+  }
   keyResponse.classList.toggle("ok", ok);
   keyResponse.classList.toggle("err", !ok);
 
@@ -402,6 +418,99 @@ function fadeTo(page) {
     window.location.href = page;
   }, 800);
 }
+
+// =========================================================
+// PURGA — CORRUPÇÃO TOTAL
+// =========================================================
+
+function startPurga() {
+  console.warn("⚠ PURGA ATIVADA — Sistema corrompido");
+
+  // 1. Ativar overlay glitch
+  const overlay = document.getElementById("purga-glitch-overlay");
+  if (overlay) {
+      overlay.classList.remove("hidden");
+      overlay.classList.add("active");
+  }
+
+  // 2. Modo Purga visual
+  document.documentElement.classList.add("purga-mode");
+
+  // 3. Substituir BEPO por monstro
+  const bepoImg = document.getElementById("bepo-img");
+  if (bepoImg) {
+    bepoImg.src = "assets/monstro-placeholder.png"; // <-- mete aqui a tua imagem depois
+  }
+
+  // 4. Respostas passam a "..."
+  window.TERMINAL_FORCE_PURGA_RESPONSES = true;
+
+  // 5. Spam de erros no boot e terminal
+  startPurgaSpam();
+}
+
+function startPurgaSpam() {
+  const boot = document.getElementById("boot-lines");
+  const prompt = document.getElementById("prompt-label");
+
+  let corruption = 0;
+
+  setInterval(() => {
+
+      const glitch = generateGlitchText();
+
+      if (boot && !bootScreen.classList.contains("hidden")) {
+          appendBootLine(glitch);
+      }
+
+      if (prompt && !mainScreen.classList.contains("hidden-init")) {
+
+          corruption += 0.04;
+
+          if (corruption > 1)
+              corruption = 1;
+
+          prompt.textContent =
+              corruptText("INSIRA A CHAVE DE ACESSO", corruption);
+
+      }
+
+  }, 800);
+}
+
+function generateGlitchText() {
+  const chars = "█▓▒<>/\\#@!?%&$αβγδεζλψΩ∴∵";
+  let out = "";
+  for (let i = 0; i < 20 + Math.random() * 40; i++) {
+    out += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return out;
+}
+
+function corruptText(text, corruption) {
+    const glitchChars = "█▓▒<>/\\#@!?%&$αβγδεζλψΩ∴∵";
+
+    return [...text].map(char => {
+
+        // Mantém espaços
+        if (char === " ") return " ";
+
+        // Probabilidade de corrupção
+        if (Math.random() < corruption) {
+            return glitchChars[Math.floor(Math.random() * glitchChars.length)];
+        }
+
+        return char;
+
+    }).join("");
+}
+
 // Iniciar a sequência de boot
+setTimeout(() => {
+    if (window.PURGA_ACTIVE) {
+        startPurga();
+    }
+}, 4000);
 startBoot(CONFIG.username);
+
 }); // Fecha o DOMContentLoaded

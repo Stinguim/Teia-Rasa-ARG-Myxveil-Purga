@@ -652,3 +652,117 @@ body::before {
   font-style: italic;
   margin: 0;
 }
+/* =========================================================
+   PURGA — VARIÁVEIS
+========================================================= */
+
+html.purga-mode {
+  --bg: #0a0000;
+  --green: #ff1a1a;
+  --green-dim: #b30000;
+  --green-faint: #660000;
+  --amber-error: #ff4444;
+}
+
+/* =========================================================
+   PURGA — OVERRIDES GLOBAIS
+========================================================= */
+
+html.purga-mode body {
+  background: var(--bg) !important;
+  color: var(--green) !important;
+  filter: hue-rotate(330deg) saturate(2);
+  animation: purgaPulse 1.5s infinite alternate;
+}
+
+@keyframes purgaPulse {
+  from { filter: hue-rotate(330deg) saturate(2) brightness(0.9); }
+  to   { filter: hue-rotate(350deg) saturate(3) brightness(1.2); }
+}
+
+/* =========================================================
+   PURGA — GLITCH OVERLAY
+========================================================= */
+
+#purga-glitch-overlay {
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255,0,0,0.1),
+    rgba(255,0,0,0.1) 2px,
+    rgba(0,0,0,0.2) 3px
+  );
+  pointer-events: none;
+  z-index: 999999;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+#purga-glitch-overlay.active {
+  opacity: 1;
+  animation: glitchOverlay 0.2s infinite;
+}
+
+@keyframes glitchOverlay {
+  0% { transform: translate(0,0); }
+  33% { transform: translate(-2px,1px); }
+  66% { transform: translate(2px,-1px); }
+  100% { transform: translate(0,0); }
+}
+
+/* =========================================================
+   PURGA — CORRUPÇÃO DE TEXTO
+========================================================= */
+
+.purga-mode #boot-lines,
+.purga-mode #key-response,
+.purga-mode #prompt-label,
+.purga-mode #terminal-status {
+  color: var(--green) !important;
+  text-shadow: 0 0 4px red, 0 0 10px #ff0000;
+  animation: glitchText 0.2s infinite;
+}
+
+@keyframes glitchText {
+  0% { transform: translate(0px, 0px); }
+  33% { transform: translate(-1px, 1px); }
+  66% { transform: translate(1px, -1px); }
+  100% { transform: translate(0px, 0px); }
+}
+
+/* =========================================================
+   PURGA — ÍCONE CORROMPIDO
+========================================================= */
+
+.purga-mode .terminal-icon {
+  filter:
+    drop-shadow(0 0 6px #ff0000)
+    drop-shadow(0 0 14px #ff0000)
+    hue-rotate(330deg)
+    saturate(3);
+  animation: iconCorrupt 0.3s infinite;
+}
+
+@keyframes iconCorrupt {
+  0% { transform: translateY(-18px) scale(1); }
+  50% { transform: translateY(-16px) scale(1.03); }
+  100% { transform: translateY(-18px) scale(1); }
+}
+
+/* =========================================================
+   PURGA — INPUT CORROMPIDO
+========================================================= */
+
+.purga-mode #key-display {
+  border-bottom: 1px solid var(--green);
+  text-shadow: 0 0 4px red;
+}
+
+/* =========================================================
+   PURGA — FADE CORROMPIDO
+========================================================= */
+
+.purga-mode #fade-screen {
+  background: #200000 !important;
+}
