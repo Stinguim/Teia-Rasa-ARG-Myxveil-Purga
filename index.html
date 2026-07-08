@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terminal ARG Teia-Rasa Myxveil</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/x-icon" href="images/x-icon.ico">
+</head>
+
+<body>
+  <!-- ======================================================
+       SEQUÊNCIA DE ARRANQUE
+  ====================================================== -->
+  <div id="boot-screen" class="hidden">
+    <div id="boot-lines"></div>
+  </div>
+
+  <!-- ======================================================
+       ECRÃ PRINCIPAL
+  ====================================================== -->
+  <div id="main-screen" class="hidden-init">
+    <img
+      src="images/terminal-icon.png"
+      alt="Terminal"
+      class="terminal-icon"
+      draggable="false">
+
+    <div class="prompt-label" id="prompt-label">INSIRA A CHAVE DE ACESSO</div>
+
+    <div class="key-input-wrap">
+      <div id="key-display" aria-hidden="true"></div>
+      <input type="text" id="key-real-input" autocomplete="off" spellcheck="false">
+    </div>
+
+    <div id="key-response"></div>
+
+    <div id="final-reveal" class="hidden">
+      <h1 class="final-title">Bem vindo Yuri</h1>
+      <a href="https://discord.gg/dKTYwhnE" target="_blank" rel="noopener" class="final-discord-link">discord.gg/dKTYwhnE</a>
+      <p class="final-note">(completaste o ARG, parabéns! Se queres interagir com BEPO, entra no discord)</p>
+    </div>
+
+    <!-- ======================================================
+         STATUS DO TERMINAL
+    ====================================================== -->
+    <div id="terminal-status">
+      <div id="status-user"></div>
+      <div id="status-status"></div>
+      <div id="status-track"></div>
+      <div id="status-uptime"></div>
+    </div>
+
+  </div>
+
+  <div id="fade-screen"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

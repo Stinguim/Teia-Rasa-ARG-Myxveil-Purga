@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>:: TRANSMISSÃO FINAL ::</title>
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" type="image/x-icon" href="../images/x-icon.ico">
+<style>
+.cipher-block {
+  font-size: 1.15rem;
+  letter-spacing: 0.15em;
+  line-height: 2.1;
+  word-break: break-word;
+  color: var(--green);
+  text-shadow: 0 0 6px var(--green);
+}
+
+.freq-table {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+  gap: 8px;
+  max-width: 560px;
+  margin: 18px auto;
+  font-size: 0.85rem;
+  color: var(--green-dim);
+}
+
+.freq-cell {
+  border: 1px solid var(--green-faint);
+  padding: 6px 4px;
+  text-align: center;
+}
+
+.freq-cell .sym {
+  font-size: 1.1rem;
+  color: var(--green);
+  display: block;
+}
+
+.crib {
+  margin: 20px auto 4px;
+  max-width: 560px;
+  text-align: left;
+  font-size: 0.85rem;
+  color: var(--green-dim);
+}
+
+.crib b {
+  color: var(--green);
+}
+
+.answer-hint {
+  font-size: 0.72rem;
+  color: var(--green-faint);
+  font-style: italic;
+  margin-top: 22px;
+}
+</style>
+</head>
+<body>
+<div class="location-page visible">
+
+<h1>:: TRANSMISSÃO FINAL — SINAL RECUPERADO ::</h1>
+
+<div class="audio-log">
+  <p class="audio-log-title">TRANSCRIÇÃO — 26 SÍMBOLOS, 1 ALFABETO</p>
+
+  <div class="cipher-block">
+    ▢✦▦▥, ☖▣ ◇☆△ ✦☖ ◎▥☖ △▨▨△▤✕△▨ ▣△▤✦☆▨△ ◇✦ ☆▨ ☗✦▨<br>
+    ○▥▤☗☆●▥ ✦ ◎✦▨▣▥▩ ✕☖▤☗▥▩ ▥ ✦▩▦△○▥,<br>
+    ✦☖ ▦▨▥▣✦☗▥ ✦ ▩△▢✦▩ ▧☖✦ ▤△▥ ●▥▩☗▥ ◇✦ ▧☖✦▢▨△▨ ▦▨▥▣✦▩▩△▩!
+  </div>
+
+  <p class="audio-log-footnote">
+    [os espaços entre blocos foram preservados — considera cada bloco uma palavra]
+  </p>
+</div>
+
+<div class="crib">
+  <h3>
+    Em português, as letras mais frequentes num texto
+    corrido costumam ser, por esta ordem, A, E, O, S, R, I...
+    O símbolo mais repetido desta transcrição já foi confirmado como sendo
+    a letra E. O segundo mais repetido é a letra O. A temática do texto é sobre uma conversa nossa.
+    O último fragmento é a última palavra do texto, que é algo do teu código de conduta.
+    Tiveste um teste parecido no teu exame de entrada, eu acredito em ti Yu4i. — BEPO
+  </h3>
+</div>
+
+<a href="../index.html" class="back-link">&larr; voltar ao terminal</a>
+
+</div>
+
+<div id="terminal-status">
+  <div id="status-user"></div>
+  <div id="status-status"></div>
+  <div id="status-track"></div>
+  <div id="status-uptime"></div>
+</div>
+
+<script src="../status.js"></script>
+<script src="frg-3z9k.js"></script>
+</body>
+</html>

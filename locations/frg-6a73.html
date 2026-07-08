@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>:: ? ::</title>
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" type="image/x-icon" href="../images/x-icon.ico">
+<style>
+.images-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin: 24px 0;
+}
+.images-row img {
+  max-width: 25vw;
+  min-width: 140px;
+  border-radius: 4px;
+}
+.images-row .x {
+  font-size: 4rem;
+  font-weight: 300;
+  opacity: 0.6;
+  user-select: none;
+  color: var(--green);
+}
+</style>
+</head>
+<body>
+
+<div class="location-page hidden-init" id="loc-main">
+  <h1>Codigo de acesso parte 3</h1>
+
+  <div class="images-row">
+    <img src="../images/number.png" alt="Fragmento de código — parte 1">
+    <div class="x">×</div>
+    <img src="../images/number 2.png" alt="Fragmento de código — parte 2">
+    <div class="x">×</div>
+    <img src="../images/number 3.png" alt="Fragmento de código — parte 3">
+  </div>
+
+  <h3>
+    O fragmento do código é por ordem decrescente — BEPO
+  </h3>
+
+  <a href="../index.html" class="back-link">&larr; voltar ao terminal</a>
+</div>
+
+<div id="terminal-status">
+  <div id="status-user"></div>
+  <div id="status-status"></div>
+  <div id="status-track"></div>
+  <div id="status-uptime"></div>
+</div>
+
+<div id="fade-screen"></div>
+
+<script src="frg-6a73.js"></script>
+<script src="../status.js"></script>
+</body>
+</html>

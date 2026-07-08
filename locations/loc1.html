@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>:: RECUPERAÇÃO DE ACESSO ::</title>
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" type="image/x-icon" href="../images/x-icon.ico">
+</head>
+<body>
+
+  <!-- ======================================================
+       SEQUÊNCIA DE BOOT — RECUPERAÇÃO DE PASSWORD
+  ====================================================== -->
+  <div id="loc-boot" class="location-boot">
+    <div id="loc-boot-lines"></div>
+  </div>
+
+  <!-- ======================================================
+       CONTEÚDO PRINCIPAL — ENIGMA
+  ====================================================== -->
+  <div class="location-page hidden-init" id="loc-main">
+    <h1>Codigo de acesso parte 1</h1>
+    <p id="loc-warning">
+      Sistema de recuperação de password ativado.
+      Por motivos de segurança, apenas um fragmento do código de acesso
+      original será exibido. O restante permanece encriptado até que a
+      identidade do requerente seja confirmada. Insira os fragmentos do código de acesso no terminal para continuar as respetivas fases.
+    </p>
+
+    <div class="enigma-frame">
+      <img src="../images/enigma1.png" alt="Fragmento de código — primeiro enigma" class="enigma-image">
+    </div>
+    <h3>A Natureza segue um padrão tão perfeito.-BEPO</h3>
+    <a href="../index.html" class="back-link">&larr; voltar ao terminal</a>
+  </div>
+
+  <div id="terminal-status">
+    <div id="status-user"></div>
+    <div id="status-status"></div>
+    <div id="status-track"></div>
+    <div id="status-uptime"></div>
+  </div>
+
+  <div id="fade-screen"></div>
+
+  <script src="loc1.js"></script>
+  <script src="../status.js"></script>
+</body>
+</html>
