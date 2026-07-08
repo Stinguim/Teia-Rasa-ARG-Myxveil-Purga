@@ -4,15 +4,18 @@
    calcula o UPTIME a partir do instante de início guardado
    em localStorage (arg_start_time).
 
-   Esta versão simula corrupção permanente de dados:
-   os valores (uptime, user, track, status) são
-   intencionalmente instáveis — dígitos e letras trocados
-   por glyphs de erro em cada refresh, como se o terminal
-   estivesse a falhar.
+   Esta versão simula corrupção permanente + a sensação de
+   estar a ser observado: o sistema por vezes "congela" por
+   alguns segundos (como se algo tivesse parado a decidir
+   o que mostrar), reage com pequenos cortes de transmissão
+   (flicker), e o UPTIME pode saltar no tempo quando o
+   congelamento termina — como se tivesse sido manipulado
+   enquanto ninguém olhava.
 ========================================================= */
 
 (function () {
   const GLITCH_CHARS = "#%&$@?!01¤§*■□";
+  const STATUS_VARIANTS = ["0NLINE", "ONL#NE", "ON$INE", "ONLIN£"];
 
   function getStartTime() {
     let start = localStorage.getItem("arg_start_time");
@@ -31,11 +34,6 @@
     return GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
   }
 
-  /*
-     Corrompe uma string trocando aleatoriamente alguns
-     caracteres por glyphs de erro. A intensidade controla
-     a probabilidade de cada caráter ser afetado.
-  */
   function corrupt(str, intensity = 0.18) {
     return str
       .split("")
@@ -46,11 +44,6 @@
       .join("");
   }
 
-  /*
-     Corrompe especificamente números (dígitos), preservando
-     a estrutura HH:MM:SS mas trocando alguns dígitos por
-     valores ou símbolos inválidos.
-  */
   function corruptDigits(str, intensity = 0.22) {
     return str
       .split("")
@@ -68,12 +61,57 @@
     return `${h}:${m}:${s}`;
   }
 
+  /* =========================================================
+     COMPORTAMENTO "OBSERVADO"
+  ========================================================= */
+
+  let frozenUntil = 0;
+  let flickerActive = false;
+  let timeSkew = 0;
+
+  function maybeFreeze() {
+    const now = Date.now();
+    if (now < frozenUntil) return true;
+
+    if (Math.random() < 0.06) {
+      const freezeMs = 1800 + Math.random() * 2600;
+      frozenUntil = now + freezeMs;
+      return true;
+    }
+    return false;
+  }
+
+  function flickerThenSet(el, finalText) {
+    if (!el || flickerActive) {
+      if (el) el.textContent = finalText;
+      return;
+    }
+
+    if (Math.random() < 0.12) {
+      flickerActive = true;
+      el.textContent = "";
+      setTimeout(() => {
+        el.textContent = finalText;
+        flickerActive = false;
+      }, 60 + Math.random() * 120);
+    } else {
+      el.textContent = finalText;
+    }
+  }
+
   function updateUptime(el) {
+    if (Date.now() < frozenUntil) return;
+
+    if (Math.random() < 0.03) {
+      timeSkew += Math.floor((Math.random() - 0.5) * 40);
+    }
+
     const start = getStartTime();
-    const elapsed = Math.floor((Date.now() - start) / 1000);
+    let elapsed = Math.floor((Date.now() - start) / 1000) + timeSkew;
+    if (elapsed < 0) elapsed = 0;
+
     const clean = formatElapsed(elapsed);
-    const glitched = corruptDigits(clean);
-    el.textContent = `UPTIME : ${glitched}`;
+    flickerThenSet(el, `UPTIME : ${corruptDigits(clean)}`);
   }
 
   document.addEventListener("DOMContentLoaded", async () => {
@@ -116,27 +154,26 @@
       baseTrack = "??????";
     }
 
-    // Estado permanentemente corrompido: STATUS nunca é limpo
-    const STATUS_VARIANTS = ["0NLINE", "ONL#NE", "ON$INE", "ONLIN£"];
-
     function refreshCorruptedFields() {
+      // Congelado: nada muda, como se algo estivesse a observar.
+      if (maybeFreeze()) return;
+
       if (statusUser) {
-        statusUser.textContent = `USER : ${corrupt(baseUser)}`;
+        flickerThenSet(statusUser, `USER : ${corrupt(baseUser)}`);
       }
       if (statusStatus) {
         const variant =
           STATUS_VARIANTS[Math.floor(Math.random() * STATUS_VARIANTS.length)];
-        statusStatus.textContent = `STATUS : ${variant}`;
+        flickerThenSet(statusStatus, `STATUS : ${variant}`);
       }
       if (statusTrack) {
-        statusTrack.textContent = `TRACK : ${corrupt(baseTrack)}`;
+        flickerThenSet(statusTrack, `TRACK : ${corrupt(baseTrack)}`);
       }
     }
 
     refreshCorruptedFields();
     updateUptime(statusUptime);
 
-    // Tudo é re-corrompido a cada segundo, não só o uptime
     setInterval(() => {
       refreshCorruptedFields();
       updateUptime(statusUptime);

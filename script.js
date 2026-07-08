@@ -70,6 +70,51 @@ function statusCorruptDigits(str, intensity = 0.22) {
 }
 
 /* =========================================================
+   COMPORTAMENTO "OBSERVADO" — pausas e hesitação
+   Não é ruído aleatório contínuo: às vezes o sistema
+   pára, hesita, ou reage com atraso — como se algo
+   estivesse a decidir o que mostrar.
+========================================================= */
+
+let statusFrozenUntil = 0;   // timestamp até ao qual os valores não mudam
+let statusFlickerActive = false;
+
+// Decide, a cada tick, se o sistema vai "congelar" por uns segundos
+function maybeFreezeStatus() {
+  const now = Date.now();
+  if (now < statusFrozenUntil) return true; // ainda congelado
+
+  // ~6% de hipótese por tick de entrar em pausa longa
+  if (Math.random() < 0.06) {
+    const freezeMs = 1800 + Math.random() * 2600; // 1.8s a 4.4s
+    statusFrozenUntil = now + freezeMs;
+    return true;
+  }
+  return false;
+}
+
+// Pequeno "corte" visual antes de mostrar um valor novo,
+// como se a transmissão tivesse falhado por um instante
+function flickerThenSet(el, finalText) {
+  if (!el || statusFlickerActive) {
+    if (el) el.textContent = finalText;
+    return;
+  }
+
+  // só faz flicker ocasionalmente, senão fica cansativo
+  if (Math.random() < 0.12) {
+    statusFlickerActive = true;
+    el.textContent = "";
+    setTimeout(() => {
+      el.textContent = finalText;
+      statusFlickerActive = false;
+    }, 60 + Math.random() * 120);
+  } else {
+    el.textContent = finalText;
+  }
+}
+
+/* =========================================================
    TEMPO PERSISTENTE (localStorage)
 ========================================================= */
 
@@ -252,16 +297,20 @@ function showMainScreen() {
 ========================================================= */
 
 function refreshCorruptedStatus() {
+  // Se o sistema está "congelado", não muda nada — como se
+  // algo estivesse a observar em silêncio antes de reagir.
+  if (maybeFreezeStatus()) return;
+
   if (statusUser) {
-    statusUser.textContent = `USER : ${statusCorrupt(CONFIG.username)}`;
+    flickerThenSet(statusUser, `USER : ${statusCorrupt(CONFIG.username)}`);
   }
   if (statusStatus) {
     const variant =
       STATUS_VARIANTS[Math.floor(Math.random() * STATUS_VARIANTS.length)];
-    statusStatus.textContent = `STATUS : ${variant}`;
+    flickerThenSet(statusStatus, `STATUS : ${variant}`);
   }
   if (statusTrack) {
-    statusTrack.textContent = `TRACK : ${statusCorrupt(CONFIG.track)}`;
+    flickerThenSet(statusTrack, `TRACK : ${statusCorrupt(CONFIG.track)}`);
   }
 }
 
@@ -269,16 +318,29 @@ function refreshCorruptedStatus() {
    UPTIME
 ========================================================= */
 
+let uptimeTimeSkew = 0; // desvio acumulado, como se o tempo fosse manipulado
+
 function updateUptime() {
+  // Durante o congelamento, o relógio não avança — como se
+  // tivesse parado enquanto algo observava.
+  if (Date.now() < statusFrozenUntil) return;
+
+  // Ocasionalmente o tempo "salta" vários segundos de repente,
+  // para trás ou para a frente, quando o freeze acaba.
+  if (Math.random() < 0.03) {
+    uptimeTimeSkew += Math.floor((Math.random() - 0.5) * 40);
+  }
+
   const start = getStartTime();
-  const elapsed = Math.floor((Date.now() - start) / 1000);
+  let elapsed = Math.floor((Date.now() - start) / 1000) + uptimeTimeSkew;
+  if (elapsed < 0) elapsed = 0;
 
   const h = String(Math.floor(elapsed / 3600)).padStart(2, "0");
   const m = String(Math.floor((elapsed % 3600) / 60)).padStart(2, "0");
   const s = String(elapsed % 60).padStart(2, "0");
 
   const clean = `${h}:${m}:${s}`;
-  statusUptime.textContent = `UPTIME : ${statusCorruptDigits(clean)}`;
+  flickerThenSet(statusUptime, `UPTIME : ${statusCorruptDigits(clean)}`);
 }
 
 /* =========================================================
