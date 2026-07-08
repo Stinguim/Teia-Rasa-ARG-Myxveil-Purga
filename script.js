@@ -423,7 +423,13 @@ function fadeTo(page) {
 // PURGA — CORRUPÇÃO TOTAL
 // =========================================================
 
+let purgaStarted = false;
+
 function startPurga() {
+
+    if (purgaStarted) return;
+    purgaStarted = true;
+
   console.warn("⚠ PURGA ATIVADA — Sistema corrompido");
 
   // 1. Ativar overlay glitch
@@ -435,6 +441,14 @@ function startPurga() {
 
   // 2. Modo Purga visual
   document.documentElement.classList.add("purga-mode");
+
+  const root = document.documentElement;
+
+  root.style.setProperty("--bg", "#0a0000");
+  root.style.setProperty("--green", "#ff1a1a");
+  root.style.setProperty("--green-dim", "#b30000");
+  root.style.setProperty("--green-faint", "#660000");
+  root.style.setProperty("--amber-error", "#ff4444");
 
   // 3. Substituir BEPO por monstro
   const bepoImg = document.getElementById("bepo-img");
@@ -504,13 +518,6 @@ function corruptText(text, corruption) {
 
     }).join("");
 }
-
-// Iniciar a sequência de boot
-setTimeout(() => {
-    if (window.PURGA_ACTIVE) {
-        startPurga();
-    }
-}, 4000);
 startBoot(CONFIG.username);
 
 }); // Fecha o DOMContentLoaded
