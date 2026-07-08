@@ -299,27 +299,28 @@ function checkKey(rawValue) {
   const value = rawValue.trim().toUpperCase();
 
   if (!value) {
-    setResponse("CHAVE INVÁLIDA. Tenta novamente.", false);
+    setResponse("...", false);
     return;
   }
 
   const entry = CONFIG.keys[value];
   entry
     ? setResponse(entry.message, entry.ok, value)
-    : setResponse("CHAVE INVÁLIDA. Tenta novamente.", false);
+    : setResponse("...", false);
 }
 
 let responseTypeToken = 0;
 
 function setResponse(message, ok, key = "") {
-  if (window.TERMINAL_FORCE_PURGA_RESPONSES) {
-    message = "...";
-    ok = false;
-  }
   keyResponse.classList.toggle("ok", ok);
   keyResponse.classList.toggle("err", !ok);
 
   typeResponse(message);
+
+  if (window.TERMINAL_FORCE_PURGA_RESPONSES) {
+    message = "...";
+    ok = false;
+  }
 
   if (!ok) {
     errorSound.currentTime = 0;

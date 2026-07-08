@@ -672,12 +672,28 @@ html.purga-mode body {
   background: var(--bg) !important;
   color: var(--green) !important;
   filter: hue-rotate(330deg) saturate(2);
-  animation: purgaPulse 1.5s infinite alternate;
+  animation: purgaPulse 10s infinite;
 }
 
 @keyframes purgaPulse {
-  from { filter: hue-rotate(330deg) saturate(2) brightness(0.9); }
-  to   { filter: hue-rotate(350deg) saturate(3) brightness(1.2); }
+  0%,
+  88%,
+  100% {
+    filter: none;
+  }
+
+  90% {
+    filter: hue-rotate(330deg) saturate(2) brightness(1.1);
+  }
+
+  92% {
+    filter: hue-rotate(350deg) saturate(3) brightness(1.25);
+  }
+
+  94% {
+    filter: hue-rotate(330deg) saturate(2);
+  }
+
 }
 
 /* =========================================================
@@ -721,7 +737,6 @@ html.purga-mode body {
 .purga-mode #terminal-status {
   color: var(--green) !important;
   text-shadow: 0 0 4px red, 0 0 10px #ff0000;
-  animation: glitchText 0.2s infinite;
 }
 
 @keyframes glitchText {
