@@ -600,7 +600,7 @@ function startPurgaSpam() {
               corruption = 1;
 
           prompt.textContent =
-              corruptText("INSIRA A CHAVE DE ACESSO", corruption);
+              corruptText("INSIRA A CHAVE DE ACESSO?", corruption);
 
       }
 
