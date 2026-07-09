@@ -540,6 +540,20 @@ function fadeTo(page) {
 
 let purgaStarted = false;
 
+function setPurgaFavicon() {
+  // Remove favicons existentes para garantir que o browser
+  // recarrega o novo ícone em vez de manter o antigo em cache
+  document
+    .querySelectorAll("link[rel~='icon']")
+    .forEach((link) => link.parentNode.removeChild(link));
+
+  const link = document.createElement("link");
+  link.rel = "icon";
+  link.type = "image/x-icon";
+  link.href = "images/x-icon-corrompido.ico";
+  document.head.appendChild(link);
+}
+
 function startPurga() {
 
     if (purgaStarted) return;
@@ -571,6 +585,10 @@ function startPurga() {
     bepoImg.src = "images/preto.png"; // <-- mete aqui a tua imagem depois
   }
 
+  // 3b. Trocar favicon e título da aba
+  setPurgaFavicon();
+  document.title = "SISTEMA CORROMPIDO";
+
   // 4. Respostas passam a "..."
   window.TERMINAL_FORCE_PURGA_RESPONSES = true;
 
@@ -600,7 +618,7 @@ function startPurgaSpam() {
               corruption = 1;
 
           prompt.textContent =
-              corruptText("INSIRA A CHAVE DE ACESSO?", corruption);
+              corruptText("INSIRA A CHAVE DE ACESSO", corruption);
 
       }
 
