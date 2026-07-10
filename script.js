@@ -7,6 +7,60 @@ window.TERMINAL_FORCE_PURGA_RESPONSES = false;
    ARG TERMINAL — script.js (com temas + sons via config.json)
 ========================================================= */
 
+/* =========================================================
+   ACESSIBILIDADE — REDUZIR FLASHES / EPILEPSIA
+   Botão fixo, sempre visível, independente do resto da lógica.
+   Preferência guardada em localStorage para persistir entre páginas.
+========================================================= */
+
+function initReducedMotionToggle() {
+  const STORAGE_KEY = "arg_reduced_motion";
+
+  function isActive() {
+    return localStorage.getItem(STORAGE_KEY) === "1";
+  }
+
+  function applyState(active) {
+    document.documentElement.classList.toggle("reduced-motion", active);
+  }
+
+  // Aplica o estado imediatamente (mesmo antes do botão existir),
+  // para que quem já tinha ativado nunca veja o flash, mesmo
+  // durante o boot.
+  applyState(isActive());
+
+  let btn = null;
+
+  function createButton() {
+    if (btn) return; // já existe, não duplicar
+
+    btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "a11y-toggle-btn";
+    btn.textContent = isActive() ? "FLASHES: OFF" : "REDUZIR FLASHES";
+    btn.classList.toggle("is-active", isActive());
+    btn.setAttribute("aria-pressed", isActive() ? "true" : "false");
+
+    btn.addEventListener("click", () => {
+      const next = !isActive();
+      localStorage.setItem(STORAGE_KEY, next ? "1" : "0");
+      applyState(next);
+      btn.textContent = next ? "FLASHES: OFF" : "REDUZIR FLASHES";
+      btn.classList.toggle("is-active", next);
+      btn.setAttribute("aria-pressed", next ? "true" : "false");
+    });
+
+    document.body.appendChild(btn);
+  }
+
+  // Exposto para ser chamado quando o ecrã principal aparecer
+  window.__showA11yToggle = createButton;
+}
+
+// Aplica o estado desde já (evita flash durante o boot),
+// mas o botão só é criado mais tarde, quando o input aparecer.
+initReducedMotionToggle();
+
 let CONFIG = null;
 let cursorVisible = true;
 let inputFocused = false;
@@ -276,6 +330,8 @@ function showMainScreen() {
   requestAnimationFrame(() => {
     mainScreen.classList.add("visible");
   });
+
+  if (window.__showA11yToggle) window.__showA11yToggle();
 
   renderKeyDisplay("");
   keyRealInput.focus();

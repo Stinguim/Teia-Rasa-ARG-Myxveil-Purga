@@ -780,3 +780,47 @@ html.purga-mode body {
 .purga-mode #fade-screen {
   background: #200000 !important;
 }
+
+/* =========================================================
+   ACESSIBILIDADE — REDUZIR FLASHES / EPILEPSIA
+========================================================= */
+
+/* Quando ativo, desliga o overlay de glitch e o pulsar do body */
+html.reduced-motion body {
+  animation: none !important;
+  filter: none !important;
+}
+
+html.reduced-motion #purga-glitch-overlay {
+  display: none !important;
+}
+
+.a11y-toggle-btn {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 1000000;
+  background: #000;
+  color: var(--green, #33ff66);
+  border: 1px solid var(--green-dim, #1a8f3a);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  padding: 7px 10px;
+  cursor: pointer;
+  opacity: 0.75;
+  transition: opacity 0.15s ease, background 0.15s ease;
+}
+
+.a11y-toggle-btn:hover,
+.a11y-toggle-btn:focus-visible {
+  opacity: 1;
+  background: var(--green-faint, #0d5c22);
+}
+
+.a11y-toggle-btn.is-active {
+  border-color: var(--green, #33ff66);
+  color: #000;
+  background: var(--green, #33ff66);
+  opacity: 1;
+}

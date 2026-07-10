@@ -14,6 +14,56 @@
 ========================================================= */
 
 (function () {
+  /* =========================================================
+     ACESSIBILIDADE — REDUZIR FLASHES / EPILEPSIA
+     Mesma lógica de script.js, para o botão existir também
+     nas páginas de locations/. Corre imediatamente, fora
+     do DOMContentLoaded do resto do ficheiro, para reagir
+     assim que possível.
+  ========================================================= */
+
+  function initReducedMotionToggle() {
+    const STORAGE_KEY = "arg_reduced_motion";
+
+    function isActive() {
+      return localStorage.getItem(STORAGE_KEY) === "1";
+    }
+
+    function applyState(active) {
+      document.documentElement.classList.toggle("reduced-motion", active);
+    }
+
+    applyState(isActive());
+
+    function createButton() {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "a11y-toggle-btn";
+      btn.textContent = isActive() ? "FLASHES: OFF" : "REDUZIR FLASHES";
+      btn.classList.toggle("is-active", isActive());
+      btn.setAttribute("aria-pressed", isActive() ? "true" : "false");
+
+      btn.addEventListener("click", () => {
+        const next = !isActive();
+        localStorage.setItem(STORAGE_KEY, next ? "1" : "0");
+        applyState(next);
+        btn.textContent = next ? "FLASHES: OFF" : "REDUZIR FLASHES";
+        btn.classList.toggle("is-active", next);
+        btn.setAttribute("aria-pressed", next ? "true" : "false");
+      });
+
+      document.body.appendChild(btn);
+    }
+
+    if (document.body) {
+      createButton();
+    } else {
+      document.addEventListener("DOMContentLoaded", createButton);
+    }
+  }
+
+  initReducedMotionToggle();
+
   const GLITCH_CHARS = "#%&$@?!01¤§*■□";
   const STATUS_VARIANTS = ["0NLINE", "ONL#NE", "ON$INE", "ONLIN£"];
 
