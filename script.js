@@ -261,20 +261,42 @@ function startBoot(username) {
 
   const lines = [...CONFIG.boot.lines, `Utilizador reconhecido: ${username}`];
   let i = 0;
+  let skipped = false;
+
+  function finishBoot() {
+    if (skipped) return;
+    skipped = true;
+    skipBtn.remove();
+    setTimeout(showProceedButton, 600);
+  }
 
   function nextLine() {
+    if (skipped) return;
     if (i < lines.length) {
       appendBootLine(lines[i]);
       i++;
       setTimeout(nextLine, 90 + Math.random() * 160);
     } else {
-      setTimeout(showProceedButton, 600);
+      finishBoot();
     }
   }
 
   if (window.PURGA_ACTIVE) {
-    setTimeout(() => startPurga(), 4000);
+    setTimeout(() => { if (!skipped) startPurga(); }, 4000);
   } 
+
+  const skipBtn = document.createElement("button");
+  skipBtn.type = "button";
+  skipBtn.className = "boot-skip-btn";
+  skipBtn.textContent = "SALTAR >>";
+  skipBtn.addEventListener("click", () => {
+    skipped = true;
+    bootLinesEl.textContent = lines.join("\n");
+    skipBtn.remove();
+    if (window.PURGA_ACTIVE) startPurga();
+    setTimeout(showProceedButton, 200);
+  });
+  bootScreen.appendChild(skipBtn);
 
   nextLine();
 }
